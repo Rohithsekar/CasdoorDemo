@@ -1,0 +1,32 @@
+server:
+  port: 8181
+
+
+spring:
+  application:
+    name: casdoor-demo
+  security:
+    oauth2:
+      client:
+        registration:
+          casdoor:
+            client-id: springboot
+            client-secret: abcd
+            scope: openid
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8181/callback
+        provider:
+          casdoor:
+            authorization-uri: http://localhost:7001/login/oauth/authorize
+            token-uri: http://localhost:8000/api/login/oauth/access_token
+            user-info-uri: http://localhost:8000/api/get-account
+            user-name-attribute: name
+#  casdoor:
+#    endpoint: http://localhost:8000
+#    client-id: springboot
+#    client-secret: abcd
+#    certificate: classpath:certs/token_jwt_key.pem
+#    organization-name: built-in
+#    application-name: springboot-app
+#    redirect-url: http://localhost:8181/callback
+
