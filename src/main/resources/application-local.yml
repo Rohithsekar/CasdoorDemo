@@ -1,0 +1,66 @@
+server:
+  port: 9090
+
+
+spring:
+  datasource:
+    jdbcUrl: jdbc:postgresql://localhost:5432/rakaz
+    username: postgres
+    password: password
+    driverClassName: org.postgresql.Driver
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+  application:
+    name: casdoor-demo
+  security:
+    oauth2:
+      client:
+        registration:
+          casdoor:
+            endpoint: "http://localhost:8000"
+            client-id: 043344ddaee8e01e2b71
+            client-secret: 5b61caf63e7774f5d58158a846d4f87828b2f124
+            jwt-public-key: classpath:certs/public_key.pem
+            organization: built-in
+            application-name: app-built-in
+        provider:
+          casdoor:
+            authorization-uri: http://localhost:8000/login/oauth/authorize
+            token-uri: http://localhost:8000/api/login/oauth/access_token
+            user-info-uri: http://localhost:8000/api/get-account
+            user-name-attribute: name
+
+
+
+casdoor:
+  endpoint: http://localhost:8000
+  client-id: 043344ddaee8e01e2b71
+  client-secret: 5b61caf63e7774f5d58158a846d4f87828b2f124
+  jwt-public-key: classpath:certs/public_key.pem
+  organization: built-in
+  application-name: app-built-in
+
+casbin:
+  model: src/main/resources/rbac/keymatch_model.conf
+  policy: src/main/resources/rbac/keymatch_policy.csv
+
+logging:
+  level:
+    hibernate: DEBUG
+    com:
+      casdoor:
+        demo:
+          controller: DEBUG
+

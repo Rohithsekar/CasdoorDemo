@@ -1,0 +1,54 @@
+server:
+  port: 9090
+
+
+spring:
+  datasource:
+    jdbcUrl: jdbc:postgresql://localhost:5432/rakaz
+    username: postgres
+    password: password
+    driverClassName: org.postgresql.Driver
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  application:
+    name: casdoor-demo
+  security:
+    oauth2:
+      client:
+        registration:
+          casdoor:
+            endpoint: https://dev-auth.yaantrac.com
+            client-id: springboot-client-id
+            client-secret: springboot-client-secret
+            jwt-public-key: classpath:certs/public_key.pem
+            organization: built-in
+            application-name: app-built-in
+        provider:
+          casdoor:
+            authorization-uri: https://dev-auth.yaantrac.com/login/oauth/authorize
+            token-uri: https://dev-auth.yaantrac.com/api/login/oauth/access_token
+            user-info-uri: http://localhost:8000/api/get-account
+            user-name-attribute: name
+
+casdoor:
+  endpoint: https://dev-auth.yaantrac.com
+  client-id: demo
+  client-secret: Demo@12345!
+  jwt-public-key: classpath:certs/public_key.pem
+  organization: datayaan
+  application-name: "Backend application"
+
+casbin:
+  model: src/main/resources/rbac/keymatch_model.conf
+  policy: src/main/resources/rbac/keymatch_policy.csv
